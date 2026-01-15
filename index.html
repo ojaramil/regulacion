@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!--
+    ============================================
+    APP DE REGULACIÓN - SEBASTIÁN
+    ============================================
+    
+    NOTAS DE DISEÑO COGNITIVO:
+    
+    Esta aplicación está diseñada específicamente para apoyar a una persona
+    neurodivergente (Asperger) en su gestión diaria del estrés universitario.
+    
+    Principios aplicados:
+    1. Mínima carga cognitiva - una acción a la vez
+    2. Previsibilidad - estructura clara y constante
+    3. Control - todo es editable y privado
+    4. Sin presión - no hay gamificación ni notificaciones
+    5. Lenguaje adulto - respeto sin condescendencia
+    
+    Uso: Abrir directamente en el navegador
+    Datos: Todo se guarda en localStorage del navegador
+    Privacidad: 100% local, ningún dato sale del dispositivo
+    -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Herramienta personal de regulación y gestión diaria">
+    <meta name="theme-color" content="#5a7d9a">
+
+    <!-- Prevenir indexación (app privada) -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Mi Espacio - Regulación</title>
+
+    <!-- Tipografía Inter desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon simple (emoji como SVG) -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+</head>
+
+<body>
+    <div class="app-container">
+
+        <!-- ====== HEADER / DASHBOARD DIARIO ====== -->
+        <header class="app-header">
+            <p class="date-display" id="currentDate">Cargando fecha...</p>
+            <h1 class="greeting" id="greeting">Hola, Sebastián</h1>
+            <p class="anchor-phrase" id="anchorPhrase">
+                Un paso a la vez es suficiente.
+            </p>
+        </header>
+
+        <!-- ====== NAVEGACIÓN POR PILARES ====== -->
+        <nav class="pillars-nav" aria-label="Navegación rápida">
+            <button class="pillar-tab active" data-target="stopSection">Pausa</button>
+            <button class="pillar-tab" data-target="controlModule">Control</button>
+            <button class="pillar-tab" data-target="relationshipsModule">Relaciones</button>
+            <button class="pillar-tab" data-target="familyModule">Familia</button>
+            <button class="pillar-tab" data-target="minimalActionModule">Acción</button>
+            <button class="pillar-tab" data-target="identityModule">Identidad</button>
+        </nav>
+
+        <!-- ====== PILAR 2: BOTÓN STOP / REGULACIÓN ====== -->
+        <section class="stop-section" id="stopSection">
+            <button class="stop-button" id="stopButton" aria-expanded="false" aria-controls="pausePanel">
+                <span class="stop-icon"></span>
+                ⏸ PAUSA
+            </button>
+
+            <div class="pause-panel" id="pausePanel" role="region" aria-label="Panel de pausa">
+                <h3>Está bien parar.</h3>
+                <ul class="pause-steps">
+                    <li>Respira profundo. Inhala 4 segundos, exhala 6.</li>
+                    <li>Si puedes, levántate y cambia de lugar.</li>
+                    <li>Bebe agua. Algo físico y simple.</li>
+                    <li>No tienes que responder a nada ahora mismo.</li>
+                    <li>Escribe lo que sientes si ayuda. O no escribas nada.</li>
+                </ul>
+                <button class="close-pause" id="closePauseBtn">Continuar cuando quiera</button>
+            </div>
+        </section>
+
+        <!-- ====== PILAR 1: CONTROL PERSONAL ====== -->
+        <section class="module" id="controlModule">
+            <div class="module-header">
+                <div class="module-icon">🎯</div>
+                <h2 class="module-title">Hoy controlo</h2>
+            </div>
+            <p class="module-description">
+                ¿Qué depende de ti hoy? Escribe 1 o 2 cosas pequeñas y concretas.
+                No lo que quisieras controlar, sino lo que realmente puedes hacer.
+            </p>
+            <div class="input-group">
+                <textarea id="controlInput" class="textarea-field"
+                    placeholder="Ejemplo: revisar un capítulo de la tesis, contestar ese correo pendiente..."
+                    aria-label="Lo que controlo hoy" rows="3"></textarea>
+            </div>
+            <div class="save-indicator" id="controlSaved">
+                <span>✓</span> Guardado
+            </div>
+        </section>
+
+        <!-- ====== PILAR 3: EXPECTATIVAS - RELACIONES ====== -->
+        <section class="module" id="relationshipsModule">
+            <div class="module-header">
+                <div class="module-icon">👥</div>
+                <h2 class="module-title">Relaciones y expectativas</h2>
+            </div>
+            <p class="module-description">
+                A veces sentimos presión que no es nuestra. Estas preguntas ayudan a separar.
+            </p>
+
+            <div class="guide-question">
+                <p>¿Qué parte de lo que siento hoy es expectativa ajena?</p>
+            </div>
+            <div class="input-group">
+                <textarea id="externalExpectation" class="textarea-field"
+                    placeholder="Escribe libremente. Esto es privado." aria-label="Expectativas externas"
+                    rows="3"></textarea>
+            </div>
+
+            <div class="guide-question">
+                <p>¿Qué necesito proteger hoy de mí mismo?</p>
+            </div>
+            <div class="input-group">
+                <textarea id="needToProtect" class="textarea-field" placeholder="Mi energía, mi tiempo, mi paz..."
+                    aria-label="Lo que necesito proteger" rows="2"></textarea>
+            </div>
+
+            <div class="save-indicator" id="relationshipsSaved">
+                <span>✓</span> Guardado
+            </div>
+        </section>
+
+        <!-- ====== PILAR 3B: EXPECTATIVAS - FAMILIA ====== -->
+        <section class="module" id="familyModule">
+            <div class="module-header">
+                <div class="module-icon">🏠</div>
+                <h2 class="module-title">Familia y expectativas</h2>
+            </div>
+            <p class="module-description">
+                Separar lo que esperan de ti de lo que tú decides. Sin confrontación, solo claridad interna.
+            </p>
+
+            <div class="input-group">
+                <label class="input-label" for="familyExpects">Lo que percibo que esperan de mí:</label>
+                <textarea id="familyExpects" class="textarea-field" placeholder="Lo que siento que mi familia espera..."
+                    rows="2"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" for="iDecideToday">Lo que yo decido hoy:</label>
+                <textarea id="iDecideToday" class="textarea-field"
+                    placeholder="Mi decisión para hoy, independiente de lo anterior..." rows="2"></textarea>
+            </div>
+
+            <div class="save-indicator" id="familySaved">
+                <span>✓</span> Guardado
+            </div>
+        </section>
+
+        <!-- ====== PILAR 4: ACCIÓN MÍNIMA DIARIA ====== -->
+        <section class="module" id="minimalActionModule">
+            <div class="module-header">
+                <div class="module-icon">✅</div>
+                <h2 class="module-title">Mi acción mínima de hoy</h2>
+            </div>
+            <p class="module-description">
+                Una sola cosa. Pequeña. Concreta. Que puedas terminar hoy.
+                No una lista, no un plan completo. Solo esto.
+            </p>
+
+            <div class="input-group">
+                <input type="text" id="minimalActionInput" class="input-field"
+                    placeholder="Ejemplo: enviar un correo, leer 10 páginas..." aria-label="Mi acción mínima">
+            </div>
+
+            <label class="checkbox-wrapper">
+                <input type="checkbox" id="actionCompleted">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Marcar como hecha</span>
+            </label>
+
+            <div class="save-indicator" id="actionSaved">
+                <span>✓</span> Guardado
+            </div>
+        </section>
+
+        <!-- ====== PILAR 5: IDENTIDAD Y SENTIDO ====== -->
+        <section class="module" id="identityModule">
+            <div class="module-header">
+                <div class="module-icon">🌿</div>
+                <h2 class="module-title">Recordatorios</h2>
+            </div>
+            <p class="module-description">
+                Frases para cuando la presión distorsione la perspectiva.
+            </p>
+
+            <div class="identity-cards" id="identityCards">
+                <!-- Las tarjetas se cargan dinámicamente desde JavaScript -->
+            </div>
+        </section>
+
+        <!-- ====== SEPARADOR ====== -->
+        <div class="section-divider">
+            <span>Historial</span>
+        </div>
+
+        <!-- ====== HISTORIAL SIMPLE ====== -->
+        <section class="history-section">
+            <button class="history-toggle" id="historyToggle">
+                Ver últimos 7 días
+            </button>
+            <div class="history-list" id="historyList">
+                <!-- El historial se carga dinámicamente -->
+            </div>
+        </section>
+
+        <!-- ====== FOOTER ====== -->
+        <footer class="app-footer">
+            <p>Todo se guarda localmente en tu navegador.</p>
+            <p>Nadie más puede ver estos datos.</p>
+
+            <div class="footer-credits">
+                <div class="footer-logo">
+                    <!-- Logo de Asperger para Asperger -->
+                    <img src="logo-claro.png" alt="Asperger para Asperger" class="logo-img">
+                </div>
+                <p class="developed-by">
+                    Desarrollado por <strong>Asperger para Asperger</strong>®<br>
+                    <span class="collab">en colaboración con <strong>6sigma IT Solutions</strong></span>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
